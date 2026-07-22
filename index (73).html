@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Sistemas — VX Case</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗂️</text></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+
+/* ===== TEMA ESCURO (padrão) ===== */
+:root{
+  --bg:#15151a;--surface:#1c1c22;--surface2:#23232b;
+  --border:#33333e;--border2:#454552;
+  --text:#f5f5f7;--text2:#a8a8b3;--text3:#7a7a87;
+  --accent:#6366f1;--accent-h:#4f46e5;
+  --toggle-bg:#1c1c22;
+}
+/* ===== TEMA CLARO ===== */
+html[data-theme="light"]{
+  --bg:#f4f5f8;--surface:#ffffff;--surface2:#eef0f4;
+  --border:#e4e6ec;--border2:#cfd2dc;
+  --text:#191a20;--text2:#565863;--text3:#868a97;
+  --accent:#5457e6;--accent-h:#4245cf;
+  --toggle-bg:#ffffff;
+}
+
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;transition:background .25s,color .25s;}
+
+.topbar{padding:32px 28px 0;max-width:1100px;margin:0 auto;position:relative;}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.title{font-size:28px;font-weight:800;letter-spacing:-.6px;margin-bottom:6px;}
+.title span{color:var(--accent);}
+.subtitle{color:var(--text2);font-size:14px;margin-bottom:28px;}
+
+/* ===== BOTÃO DE TEMA ===== */
+.theme-toggle{
+  position:absolute;top:30px;right:28px;
+  display:flex;align-items:center;gap:8px;
+  background:var(--toggle-bg);border:1px solid var(--border);
+  color:var(--text2);border-radius:99px;padding:8px 14px;
+  font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;
+  cursor:pointer;transition:border-color .2s,color .2s,background .2s;
+}
+.theme-toggle:hover{border-color:var(--border2);color:var(--text);}
+.theme-toggle .ico{font-size:15px;line-height:1;}
+
+/* ===== BARRA DE AÇÕES ===== */
+.actions{max-width:1100px;margin:0 auto;padding:0 28px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.btn{background:var(--surface);border:1px solid var(--border);color:var(--text2);border-radius:9px;padding:9px 14px;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s,background .2s;display:inline-flex;align-items:center;gap:7px;}
+.btn:hover{border-color:var(--border2);color:var(--text);}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+.btn-primary:hover{background:var(--accent-h);border-color:var(--accent-h);color:#fff;}
+.count{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-left:auto;}
+
+.grid{max-width:1100px;margin:0 auto;padding:0 28px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:14px;transition:border-color .2s,transform .2s,background .25s;position:relative;overflow:hidden;}
+.card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.card:hover .arrow{transform:translate(2px,-2px);opacity:1;}
+.card.off{opacity:.55;cursor:not-allowed;}
+.card.off:hover{transform:none;}
+
+.card-icon{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+
+.card-body{flex:1;}
+.card-name{font-size:15px;font-weight:700;letter-spacing:-.2px;margin-bottom:4px;}
+.card-desc{font-size:12.5px;color:var(--text3);line-height:1.5;}
+
+.card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border);}
+.card-tag{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;background:var(--surface2);padding:3px 8px;border-radius:5px;}
+.arrow{font-size:16px;color:var(--text3);opacity:.5;transition:all .2s;}
+
+/* ===== USUÁRIOS ===== */
+.users{max-width:1100px;margin:0 auto;padding:0 28px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
+.user-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:border-color .2s,transform .2s;text-align:left;font-family:'Inter',sans-serif;color:inherit;}
+.user-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;letter-spacing:.5px;flex-shrink:0;}
+.user-name{font-size:15px;font-weight:700;letter-spacing:-.2px;margin-bottom:3px;}
+.user-meta{font-size:12px;color:var(--text3);}
+
+/* ===== SELEÇÃO DE SISTEMAS ===== */
+.picker{max-width:1100px;margin:0 auto;padding:0 28px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;}
+.pick{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px 16px;cursor:pointer;transition:border-color .2s;}
+.pick:hover{border-color:var(--border2);}
+.pick input{width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex-shrink:0;}
+.pick .pi{font-size:17px;}
+.pick .pn{font-size:13.5px;font-weight:600;}
+
+.empty{max-width:1100px;margin:0 auto;padding:0 28px 60px;color:var(--text3);font-size:13.5px;}
+.footer-note{max-width:1100px;margin:0 auto;padding:0 28px 40px;color:var(--text3);font-size:12px;text-align:center;}
+.hidden{display:none;}
+
+@media (max-width:640px){
+  .theme-toggle{position:static;margin-bottom:18px;}
+  .topbar{padding-top:24px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+    <span class="ico" id="themeIco">☀️</span><span id="themeTxt">Tema claro</span>
+  </button>
+  <div class="eyebrow" id="eyebrow">VX Case · Operações</div>
+  <div class="title" id="pageTitle">Painel de <span>Sistemas</span></div>
+  <div class="subtitle" id="pageSub">Escolha o usuário para abrir os sistemas</div>
+</div>
+
+<div class="actions hidden" id="actions"></div>
+<div class="users" id="usersView"></div>
+<div class="grid hidden" id="gridView"></div>
+<div class="picker hidden" id="pickerView"></div>
+<div class="empty hidden" id="emptyView">Nenhum sistema selecionado. Clique em <b>Editar sistemas</b> para escolher.</div>
+
+<div class="footer-note">Painel interno · Acesso restrito à equipe</div>
+
+<script>
+/* ===================== DADOS ===================== */
+const SISTEMAS = [
+  {id:'analista-tampografia', nome:'Analista Tampografia', desc:'Tela de operação para analistas da tampografia', url:'https://admvxcase2026-creator.github.io/tampografia/analista.html', ico:'👤', bg:'#3d2c00', cor:'#fcd34d', tag:'Sistema'},
+  {id:'bipagem', nome:'Bipagem', desc:'Leitura e confirmação de itens via bipagem', url:'https://vxcase.onrender.com/bipagem.html', ico:'📷', bg:'#14302a', cor:'#4ade80', tag:'Sistema'},
+  {id:'controle-codigos', nome:'Controle de Códigos', desc:'Desativação e reativação controlada de códigos de produto', url:'#', ico:'🔢', bg:'#1e2a47', cor:'#93c5fd', tag:'Sistema'},
+  {id:'controle-excedentes', nome:'Controle de Excedentes', desc:'Registro de excedentes de expedição, com métricas', url:'#', ico:'🧾', bg:'#3d2c00', cor:'#fcd34d', tag:'Sistema'},
+  {id:'demandas', nome:'Demandas', desc:'Gestão e acompanhamento de demandas internas', url:'https://admvxcase2026-creator.github.io/demandas/', ico:'📋', bg:'#3b1212', cor:'#fca5a5', tag:'Sistema'},
+  {id:'devolucao', nome:'Devolução', desc:'Movimentos de devolução por loja e recebimento no estoque', url:'#', ico:'↩️', bg:'#3b1212', cor:'#fca5a5', tag:'Sistema'},
+  {id:'distribuicao', nome:'Distribuição', desc:'Controle de chegada, liberação e distribuição de produtos', url:'#', ico:'🚚', bg:'#14302a', cor:'#4ade80', tag:'Sistema'},
+  {id:'estoque-tampografia', nome:'Estoque Tampografia', desc:'Controle de estoque vinculado à tampografia', url:'https://admvxcase2026-creator.github.io/tampografia/estoque.html', ico:'📦', bg:'#14302a', cor:'#4ade80', tag:'Sistema'},
+  {id:'etiquetas', nome:'Etiquetas', desc:'Geração e impressão de etiquetas de envio', url:'https://vxcase.onrender.com/etiquetas', ico:'🏷️', bg:'#412402', cor:'#fbbf24', tag:'Sistema'},
+  {id:'fardacontrol', nome:'FardaControl', desc:'Gestão de uniformes e fardamentos da equipe', url:'https://admvxcase2026-creator.github.io/fardamentos/fardamentos.html', ico:'👔', bg:'#4b1528', cor:'#f4a3c1', tag:'Login próprio'},
+  {id:'feedback-gestores', nome:'Feedback de Gestores', desc:'Painel de avaliação dos analistas pelos gestores de loja', url:'https://admvxcase2026-creator.github.io/feedbackgestores/painel-feedback.html', ico:'💬', bg:'#4b1528', cor:'#f4a3c1', tag:'Senha'},
+  {id:'painel-gerencial', nome:'Painel Gerencial', desc:'Painel principal de gestão logística VXCase', url:'https://vxcase.onrender.com/painel', ico:'📊', bg:'#1e2a47', cor:'#93c5fd', tag:'Login próprio'},
+  {id:'protocolo-saida', nome:'Protocolo de Saída', desc:'Registro e rastreio de saídas de estoque', url:'https://admvxcase2026-creator.github.io/protocoloestoque/registro.html', ico:'✅', bg:'#1e2a47', cor:'#93c5fd', tag:'Senha'},
+  {id:'remanejamento', nome:'Remanejamento', desc:'Controle de remanejamento de produtos entre lojas', url:'https://admvxcase2026-creator.github.io/remanejamento/', ico:'🔄', bg:'#3d2c00', cor:'#fcd34d', tag:'Sistema'},
+  {id:'tampografia', nome:'Tampografia', desc:'Gestão de impressão e processos de tampografia', url:'https://admvxcase2026-creator.github.io/tampografia/tampografia.html', ico:'🖨️', bg:'#1e2a47', cor:'#93c5fd', tag:'Sistema'},
+  {id:'transferencia', nome:'Transferência de Produtos', desc:'Registro rápido de transferências entre pontos de venda', url:'#', ico:'🔁', bg:'#3d2c00', cor:'#fcd34d', tag:'Sistema'}
+].sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
+
+const USUARIOS = [
+  {id:'geral',   nome:'Geral',           todos:true,  bg:'#1e2a47', cor:'#93c5fd'},
+  {id:'amanda',  nome:'Amanda Menezes',  todos:false, bg:'#4b1528', cor:'#f4a3c1'},
+  {id:'felipe',  nome:'Felipe Santana',  todos:false, bg:'#14302a', cor:'#4ade80'},
+  {id:'raquel',  nome:'Raquel França',   todos:false, bg:'#3d2c00', cor:'#fcd34d'},
+  {id:'suiane',  nome:'Suiane Lopes',    todos:false, bg:'#3b1212', cor:'#fca5a5'}
+];
+
+/* ===================== ESTADO ===================== */
+const KEY = u => 'vxhub-sel-' + u;
+const $ = id => document.getElementById(id);
+let usuarioAtual = null, modoEdicao = false;
+
+function getSel(uid){
+  try{
+    const raw = localStorage.getItem(KEY(uid));
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return SISTEMAS.map(s=>s.id); // padrão: todos
+}
+function setSel(uid, ids){
+  try{ localStorage.setItem(KEY(uid), JSON.stringify(ids)); }catch(e){}
+}
+function iniciais(nome){
+  const p = nome.trim().split(/\s+/);
+  return (p.length>1 ? p[0][0]+p[1][0] : p[0].slice(0,2)).toUpperCase();
+}
+
+/* ===================== TELAS ===================== */
+function telaUsuarios(){
+  usuarioAtual = null; modoEdicao = false;
+  $('eyebrow').textContent = 'VX Case · Operações';
+  $('pageTitle').innerHTML = 'Painel de <span>Sistemas</span>';
+  $('pageSub').textContent = 'Escolha o usuário para abrir os sistemas';
+  $('actions').classList.add('hidden');
+  $('gridView').classList.add('hidden');
+  $('pickerView').classList.add('hidden');
+  $('emptyView').classList.add('hidden');
+  $('usersView').classList.remove('hidden');
+
+  $('usersView').innerHTML = USUARIOS.map(u=>{
+    const qtd = u.todos ? SISTEMAS.length : getSel(u.id).length;
+    return `<button class="user-card" data-user="${u.id}">
+      <div class="avatar" style="background:${u.bg};color:${u.cor};">${iniciais(u.nome)}</div>
+      <div>
+        <div class="user-name">${u.nome}</div>
+        <div class="user-meta">${u.todos ? 'Todos os sistemas' : qtd + (qtd===1?' sistema':' sistemas')}</div>
+      </div>
+    </button>`;
+  }).join('');
+
+  $('usersView').querySelectorAll('.user-card').forEach(b=>{
+    b.addEventListener('click',()=>telaSistemas(b.dataset.user));
+  });
+}
+
+function telaSistemas(uid){
+  usuarioAtual = USUARIOS.find(u=>u.id===uid);
+  modoEdicao = false;
+  const u = usuarioAtual;
+  const ids = u.todos ? SISTEMAS.map(s=>s.id) : getSel(u.id);
+  const lista = SISTEMAS.filter(s=>ids.includes(s.id));
+
+  $('eyebrow').textContent = 'VX Case · Operações';
+  $('pageTitle').innerHTML = u.nome === 'Geral' ? 'Todos os <span>Sistemas</span>' : `Sistemas de <span>${u.nome.split(' ')[0]}</span>`;
+  $('pageSub').textContent = u.todos ? 'Lista completa das ferramentas internas' : 'Ferramentas selecionadas por este usuário';
+  $('usersView').classList.add('hidden');
+  $('pickerView').classList.add('hidden');
+  $('actions').classList.remove('hidden');
+
+  $('actions').innerHTML = `
+    <button class="btn" id="btnVoltar">← Trocar usuário</button>
+    ${u.todos ? '' : '<button class="btn btn-primary" id="btnEditar">✎ Editar sistemas</button>'}
+    <span class="count">${lista.length} de ${SISTEMAS.length}</span>`;
+  $('btnVoltar').addEventListener('click', telaUsuarios);
+  if(!u.todos) $('btnEditar').addEventListener('click', telaEditar);
+
+  if(lista.length === 0){
+    $('gridView').classList.add('hidden');
+    $('emptyView').classList.remove('hidden');
+    return;
+  }
+  $('emptyView').classList.add('hidden');
+  $('gridView').classList.remove('hidden');
+  $('gridView').innerHTML = lista.map(s=>{
+    const sem = s.url === '#';
+    return `<a class="card${sem?' off':''}" href="${s.url}" ${sem?'':'target="_blank" rel="noopener"'} ${sem?'title="Link ainda não configurado"':''}>
+      <div class="card-icon" style="background:${s.bg};color:${s.cor};">${s.ico}</div>
+      <div class="card-body">
+        <div class="card-name">${s.nome}</div>
+        <div class="card-desc">${s.desc}</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-tag">${sem?'Sem link':s.tag}</span>
+        <span class="arrow">↗</span>
+      </div>
+    </a>`;
+  }).join('');
+  $('gridView').querySelectorAll('.card.off').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
+}
+
+function telaEditar(){
+  modoEdicao = true;
+  const u = usuarioAtual;
+  const ids = getSel(u.id);
+
+  $('pageSub').textContent = 'Marque os sistemas que devem aparecer na tela de ' + u.nome.split(' ')[0];
+  $('gridView').classList.add('hidden');
+  $('emptyView').classList.add('hidden');
+  $('pickerView').classList.remove('hidden');
+
+  $('actions').innerHTML = `
+    <button class="btn btn-primary" id="btnSalvar">Salvar</button>
+    <button class="btn" id="btnCancelar">Cancelar</button>
+    <button class="btn" id="btnTodos">Marcar todos</button>
+    <button class="btn" id="btnNenhum">Limpar</button>`;
+
+  $('pickerView').innerHTML = SISTEMAS.map(s=>`
+    <label class="pick">
+      <input type="checkbox" value="${s.id}" ${ids.includes(s.id)?'checked':''}>
+      <span class="pi">${s.ico}</span>
+      <span class="pn">${s.nome}</span>
+    </label>`).join('');
+
+  const boxes = () => $('pickerView').querySelectorAll('input[type=checkbox]');
+  $('btnTodos').addEventListener('click',()=>boxes().forEach(b=>b.checked=true));
+  $('btnNenhum').addEventListener('click',()=>boxes().forEach(b=>b.checked=false));
+  $('btnCancelar').addEventListener('click',()=>telaSistemas(u.id));
+  $('btnSalvar').addEventListener('click',()=>{
+    setSel(u.id, Array.from(boxes()).filter(b=>b.checked).map(b=>b.value));
+    telaSistemas(u.id);
+  });
+}
+
+/* ===================== TEMA ===================== */
+(function(){
+  var root=document.documentElement, KEYT='vxhub-theme';
+  var ico=$('themeIco'), txt=$('themeTxt');
+  function apply(t){
+    root.setAttribute('data-theme',t);
+    try{localStorage.setItem(KEYT,t);}catch(e){}
+    ico.textContent = t==='light' ? '🌙' : '☀️';
+    txt.textContent = t==='light' ? 'Tema escuro' : 'Tema claro';
+  }
+  var saved;
+  try{saved=localStorage.getItem(KEYT);}catch(e){}
+  if(!saved) saved = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  apply(saved);
+  $('themeToggle').addEventListener('click',function(){
+    apply(root.getAttribute('data-theme')==='light' ? 'dark' : 'light');
+  });
+})();
+
+telaUsuarios();
+</script>
+
+</body>
+</html>
